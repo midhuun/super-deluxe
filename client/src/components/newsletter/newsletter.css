@@ -1,0 +1,4 @@
+.carousel__dot--selected {
+    background-color: #000 !important; /* Active dot color */
+    border-color: #000;     /* Optional: change border */
+  }

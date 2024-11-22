@@ -1,0 +1,19 @@
+{
+  "name": "super-deluxe",
+  "version": "1.0.0",
+  "description": "Backend for E-commerce web application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midhuun/super-deluxe.git"
+  },
+  "author": "Midhun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/midhuun/super-deluxe/issues"
+  },
+  "homepage": "https://github.com/midhuun/super-deluxe#readme"
+}
