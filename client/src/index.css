@@ -10,6 +10,8 @@ body{
   font-weight:400;
 }
 .advertisement{
-  font-family: "Doto", sans-serif;
+  font-family: "Doto", sans-serif !important;
   font-weight: 600;
+  
 }
+
