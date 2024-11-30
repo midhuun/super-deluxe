@@ -2,85 +2,60 @@ const express = require("express");
 const app = express();
 const cors = require('cors')
 const env = require("dotenv");
-const generateSlug = require('./utils/generateSlug');
 const {connectTODB}  = require('./config/database');
-const {UserModel} = require('./models/UserModel');
-const {ProductModel,SubCategoryModel,CategoryModel} = require('./models/ProductModel');
+const { UserModel } = require('./models/UserModel');
+const jwt = require('jsonwebtoken')
+const cookieParser = require("cookie-parser");
+const {userAuth} = require('./middleware/userauth')
+const {updateUser,loginUser} = require('./requests/userRequests');
+const {productRequest,uniqueProductRequest,categoryRequest} = require('./requests/productRequest');
+const {adminRequest} = require('./requests/adminrequests');
 env.config();
-app.use(cors());
+app.use(cors({origin:'http://localhost:5173',credentials:true}));
+app.use(cookieParser());
 app.use(express.json());
 const port = process.env.PORT || 3000;
-app.post("/user/login",async(req,res,next)=>{
+const SECRET = process.env.SECRET || '12@dmrwejfwf3rnwnrm';
+app.post("/user/login",loginUser);
+app.patch("/user/update",userAuth,updateUser);
+app.post("/admin/create/:field",adminRequest)
+app.get("/products/:category",categoryRequest)
+app.get("/products",productRequest)
+app.get("/product/:name",uniqueProductRequest);
+app.get("/api/cart",userAuth, async(req,res)=>{
+    const {token} = req.cookies;
+    const decoded = jwt.verify(token,SECRET);
     try{
-    const {firstName,lastName,email,phone} = req.body;
-    const user = await new UserModel(req.body);
-    await user.save();
-    console.log(user)
-    res.send("User Created")
+      const user = await UserModel.find({_id:decoded.id})
+      res.send({message:user.cart})
     }
-    catch(err){
-        console.log(err);
-        res.status(400).send(err?.message);
-    }
-    
-});
-app.post("/admin/create/:field",async(req,res)=>{
-    const params = req.params;
-    const {name} = req.body
-    const slug = generateSlug(name);
-    try{
-    if(params.field ==='category'){
-      const category = await new CategoryModel({...req.body,slug});
-      await category.save();
-      res.send("Category Created");
-    }
-    else if(params.field ==='product'){
-        const product = await new ProductModel({...req.body,slug});
-        await product.save();
-        res.send("Product Added Succesfully");
-    }
-    else if(params.field ==='subCategory'){
-        const subCategory = await new SubCategoryModel({...req.body,slug});
-        await subCategory.save();
-        res.send("SubCategory added Accessfully");
-    }
-}
-catch(err){
-    console.log(err)
-    res.status(400).send("Error creating Categories  "+  err.message);
-}
-})
-app.get("/products/:category",async(req,res)=>{
-    const {category} = req.params;
-    try{
-        const Products = await ProductModel.find({category:category})
-        res.send(Products);
-    }
-    catch(err){
-        res.send(err)
+    catch{
+        res.status(500).send({message:"Error Occured"})
     }
 })
-app.get("/products",async(req,res)=>{
+app.get("/api/cart",userAuth, async(req,res)=>{
+    const {token} = req.cookies;
+    const decoded = jwt.verify(token,SECRET);
     try{
-    const products = await ProductModel.find().populate('category');
-    const subCategories = await SubCategoryModel.find().populate('category');
-    const categories = await CategoryModel.find().populate({path:'subcategories',populate:{path:'products',model:'Product'}});;
-    res.send({products,categories,subCategories});
+      const user = await UserModel.find({_id:decoded.id})
+      res.send({message:user.cart})
     }
-    catch(err){
-        console.log(err)
-        res.status(400).send("Error fetching products");
+    catch{
+        res.status(500).send({message:"Error Occured"})
     }
 })
-app.get("/product/:name",async(req,res)=>{
-    const {name} = req.params;
-    try{
-        const product = await ProductModel.find({slug:name});
-        res.send(product)
+app.post("/api/addToCart",async(req,res)=>{
+    const cart = req.body;
+    console.log(cart);
+    const {token} = req.cookies;
+    const decoded = jwt.verify(token,SECRET);
+    try{ 
+        await UserModel.updateOne({_id:decoded.id},{cart:cart});
+        
+        res.send({message:"Item Added to Cart"})
     }
     catch(err){
-        console.log(err);
-        res.send("Error")
+        res.send("Error adding to cart");
     }
 })
 connectTODB().then(()=>{

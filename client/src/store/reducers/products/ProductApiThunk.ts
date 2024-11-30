@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchProducts= createAsyncThunk('products/fetchProducts', async (__,thunkApi) => {
     try{
-    const response = await fetch("http://localhost:3001/products")
+    const response = await fetch("http://localhost:3001/products",{credentials:'include'})
     if(!response.ok){
         thunkApi.rejectWithValue("Cannot get data");
     }

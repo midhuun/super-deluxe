@@ -10,13 +10,11 @@ const CategoryProducts = () => {
   },[])
     const params = useParams();
     const {categoryName} = params;
-    console.log(categoryName)
     const products:any = useSelector((state:RootState) => state.Products);
     const {items}:result = products;
     const filteredItems= items?.products?.filter((product:Product)=>product.category.slug === categoryName);
-    console.log(filteredItems)
   return (
-    <div className="flex gap-1 px-2 pt-2 md:gap-4 justify-center md:justify-start flex-wrap">
+    <div className="flex gap-1 space-y-2 px-2 p-2 md:gap-4  md:justify-start flex-wrap">
     {filteredItems?.map((product:Product)=>
     <div key={product._id}>
         <ProductCard product={product} />

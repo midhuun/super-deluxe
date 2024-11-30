@@ -2,11 +2,12 @@ export type Product = {
     _id:number,
     name:string,
     slug:string,
+    description:string,
     createdAt:Date,
     updatedAt:Date,
     images:string[],
     discount?:number,
-    attributes?:Object
+    attributes?:any
     price:number
     category:any,
     subcategory:any,

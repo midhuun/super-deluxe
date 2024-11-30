@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const {Order} = require('./OrderModel');
 const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true,
         minLength:[4,"Name Cannot be less than 4 characters"],
         maxLength:[20,"Name Cannot be more than 20 characters"],
         trim:true
@@ -27,13 +27,16 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique:true,
-        validate:(val)=>{
-            if(!validator.isEmail(val)){
-                throw new Error('Invalid Email');
-        }
+    },
+    orders:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Order"
     }
-    }
+    ],
+    cart:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"ProductOrder"
+    }]
 })
 
  const UserModel = mongoose.model("User",UserSchema);

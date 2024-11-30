@@ -1,0 +1,1 @@
+export const instructions = ["Machine wash","Wash in cold water", "Gentle hand wash with mild washing detergent or soap Dry inside out, Dry in shade","Do not bleach, do not tumble dry","Do Not Iron on directly prints/embroider"]

@@ -1,11 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchProducts } from "./ProductApiThunk";
+import { Category, Product, SubCategory } from "../../../types/CategoryType";
+type itemsType = {
+    products:Product[],
+    categories:Category[],
+    subCategories:SubCategory[],
+    user:Object
+}
+type initialStateType ={
+    items:itemsType| Object,
+    status:string
+}
+const initialState:initialStateType= {
+    items:{},
+    status:'idle'
+}
 const ProductSlice = createSlice({
     name: "products",
-    initialState: {
-        items: {},
-        status: "idle",
-    },
+   initialState,
     reducers: {
     },
     extraReducers: (builder) => {
