@@ -10,12 +10,10 @@ env.config();
 app.use(cors({origin:'http://localhost:5173',credentials:true}));
 app.use(cookieParser());
 app.use(express.json());
-const port = process.env.PORT || 3000;
 const SECRET = process.env.SECRET || '12@dmrwejfwf3rnwnrm';
 const productRequest = async(req,res)=>{
     try{
     const {token} = req.cookies;
-    console.log(token);
     const products = await ProductModel.find().populate('category');
     const subCategories = await SubCategoryModel.find().populate('category').populate('products');
     const categories = await CategoryModel.find().populate({path:'subcategories',populate:{path:'products',model:'Product'}});;
@@ -24,10 +22,10 @@ const productRequest = async(req,res)=>{
         const decoded = jwt.verify(token,SECRET);
         const user = await UserModel.findById(decoded.id);
         if(user){
-            res.send({products,categories,subCategories,user:user});
+            res.status(200).send({products,categories,subCategories,user:user});
         }
         else{
-            res.send({products,categories,subCategories});
+            res.status(201).send({products,categories,subCategories});
         }
         }
         catch(err){
@@ -35,7 +33,7 @@ const productRequest = async(req,res)=>{
         }
     }
     else{
-        res.send({products,categories,subCategories});
+        res.status(201).send({products,categories,subCategories});
     }
     }
     catch(err){

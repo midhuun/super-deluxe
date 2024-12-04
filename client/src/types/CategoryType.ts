@@ -5,7 +5,7 @@ export type Product = {
     description:string,
     createdAt:Date,
     updatedAt:Date,
-    images:string[],
+    images:[],
     discount?:number,
     attributes?:any
     price:number

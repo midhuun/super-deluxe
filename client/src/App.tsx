@@ -4,7 +4,7 @@ import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 import Home from "./components/home/home";
 import Login from "./components/user/login";
 import Loading from "./components/loading";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./store/reducers/products/ProductApiThunk";
 import { AppDispatch, RootState } from "./store/store";
@@ -12,10 +12,20 @@ import CategoryProducts from "./components/categoryCard/categoryProducts";
 import ProductPage from "./components/products/productPage";
 import Account from "./components/user/account";
 import Footer from "./components/footer/footer";
+import Checkout from "./components/checkout/checkout";
+import { MenuProvider } from "./context/MenuContext";
 function App() {
   const products = useSelector((state:RootState) => state.Products);
   const dispatch = useDispatch<AppDispatch>();
   const {status} = products;
+  console.log(products)
+  const {isAuthenticated,setisAuthenticated} = useContext(MenuProvider);
+  setTimeout(() => {
+    if(products.items?.user){
+      setisAuthenticated(true);
+    }
+  }, 1000);
+  console.log(isAuthenticated);
   useEffect(()=>{
     setTimeout(() => {
       dispatch(fetchProducts());
@@ -37,6 +47,7 @@ function App() {
       <Route path="/category/:categoryName" element={<CategoryProducts/>} />
       <Route path="/product/:product" element={<ProductPage/>} />
       <Route path="/account" element={<Account/>} />
+      <Route path="/checkout" element={<Checkout/>} />
     </Routes>
     </Router>
     <Footer/>

@@ -15,7 +15,7 @@ const updateUser = async(req,res)=>{
     const body = req.body;
     console.log(body)
     const {token} = req.cookies;
-    console.log(token);
+  
     const decoded =await jwt.verify(token,SECRET);
     const user = await UserModel.updateOne({_id:decoded.id},req.body,{runValidators:true,new:true})
     res.send({user:user});

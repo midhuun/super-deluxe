@@ -2,24 +2,25 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../types/CategoryType";
 import { IoCloseSharp } from "react-icons/io5";
-import SizeCard from "./SizeCard";
+import SizeCard from "./sizeCard";
 import OfferCard from "./offerCard";
 import { sizeChart } from "../../utils/sizechart";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaTruck } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import DropdownCard from "./dropdownCard";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useDispatch } from "react-redux";
 import { addtoCart, removeFromCart } from "../../store/reducers/cart/cartReducer";
-import { CartType } from "../../types/CartType";
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 const ProductPage = () => {
     const params:any = useParams();
     const [size,setsize] = useState<any>(sizeChart[0]);
     const dispatch = useDispatch();
-    const cart:any = useSelector<RootState>((state)=>state.Cart);
     const {product} = params;
     const [productdata,setproductdata] = useState<Product | null >(null);
+    const [active,setActive] = useState<number>(0);
     const [chartOpen,setchartOpen] = useState<Boolean>(false);
 useEffect(()=>{
    window.scrollTo(0,0)
@@ -36,14 +37,49 @@ useEffect(()=>{
    }
    getProduct()
 },[])
+  function handleChangeImage(data:string){
+    if(data =='prev'){
+      if(active ==0){
+        return ;
+      }
+     setActive(active-1);
+    }
+    if(data=='next'){
+      if(active == (productdata?.images && (productdata?.images.length-1) )){
+        return;
+      }
+      setActive((prev)=>prev+1)
+    }
+    console.log(active)
+  }
   const handleAddToCart = (product:any) => {
     dispatch(addtoCart(product));
-   
  }
   return (
    <div className="w-full p-3 flex justify-center">
-   <div className="flex justify-center pt-5 md:pt-10 md:px-[5%] md:gap-[80px] w-full md:justify-start flex-col md:flex-row">
-    <img className="md:h-[130vh] object-cover w-full border md:w-[50%]" src={productdata?.images[0]} alt="" />
+   <div className="flex justify-center pt-5 md:pt-10 md:px-[5%] md:gap-[80px]  md:justify-start flex-col md:flex-row">
+    <div className="w-full md:w-[50%]">
+    <div className="md:hidden h-[70vh] flex overflow-hidden">
+      <img  className="md:h-[50vh] transition-all duration-500 animate-fade-in object-cover w-full border" src={productdata?.images[active]} alt="" />
+    </div>
+    <div className="flex md:hidden text-lg w-full gap-5 pt-6 p-3 justify-center">
+    <button onClick={()=>handleChangeImage('prev')}><GrFormPrevious /></button>
+          <p className="text-[12px] text-gray-500">{active+1}/{productdata?.images.length}</p>
+          <button onClick={()=>handleChangeImage('next')}><GrFormNext /></button>
+
+    </div>
+    <Zoom>
+    <img className="md:h-[130vh] hidden md:block overflow-hidden object-cover w-full border" src={productdata?.images[0]} alt="" />
+    </Zoom>
+    <div className="w-full p-2 justify-center  gap-2 md:flex flex-wrap hidden">
+    {productdata?.images&& productdata.images.length>1 &&
+    productdata.images.map((image,index)=>
+    <div className="w-[45%]" key={index}>
+      <img  className="w-full h-[50vh] object-cover" src={image} alt="Product" />
+    </div>)
+     }
+     </div>
+    </div>
     <div className=" space-y-2 pt-5 md:pt-0 md:w-[40%] md:space-y-3">
       <h1  className="text-lg md:text-4xl">{productdata?.name}</h1>
       <h2 className="font-light text-md md:text-xl tracking-wide md:tracking-widest">Rs. {productdata?.price}.00</h2>
@@ -86,7 +122,7 @@ useEffect(()=>{
         </div>
       </div>
       <div onClick={()=>setchartOpen(true)} className="flex cursor-pointer items-center gap-2">
-        <img src="/size.png" className="w-8 object-contain h-8" alt="" />
+        <img src="/size.png"  className="w-8 object-contain h-8" alt="" />
         <p className="text-sm">Size Chart</p>
       </div>
       <div className="font-light text-[8px] md:text-[10px] space-y-1 md:space-y-2">

@@ -44,6 +44,16 @@ app.get("/api/cart",userAuth, async(req,res)=>{
         res.status(500).send({message:"Error Occured"})
     }
 })
+app.get("/logout",(req,res)=>{
+    try{
+    res.clearCookie('token');
+    console.log(req.cookies);
+    res.status(200).send({message:"Logged out Successfully"})
+    }
+    catch(err){
+        res.status(404).send("Error logging out")
+    }
+})
 app.post("/api/addToCart",async(req,res)=>{
     const cart = req.body;
     console.log(cart);

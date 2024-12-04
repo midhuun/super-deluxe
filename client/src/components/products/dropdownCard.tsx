@@ -9,6 +9,8 @@ type openType={
     description:boolean,specifications:boolean,washing:boolean,style:boolean,disclaimer:boolean
 }
 const DropdownCard:React.FC<attributes>= ({attributes,description}) => {
+    const keys = attributes && Object.keys(attributes) || [];
+    console.log(keys)
     const [open,setopen]= useState<openType>({description:false,specifications:false,washing:false,style:false,disclaimer:false});  
   return (
     <div className="pt-5">
@@ -23,9 +25,13 @@ const DropdownCard:React.FC<attributes>= ({attributes,description}) => {
          <hr />
          </div>
          <div>
-        <div className="relative p-3" onClick={()=>setopen((prev)=>({...prev,specifications:!prev.specifications}))}>
+        <div className="relative p-3 cursor-pointer select-none" onClick={()=>setopen((prev)=>({...prev,specifications:!prev.specifications}))}>
             <p className="text-gray-800">Specifications</p>
-            <p className={`${open.description?"block":"hidden"}`}></p>
+            <p className={`${open.specifications?"block":"hidden"}`}>
+                {keys.length>0 && keys.map((key:any)=>
+                <p className="p-2 text-sm pt-4 text-gray-800">{key}:<span className="ml-3 text-gray-500">{attributes[key]}</span></p>
+                )}
+            </p>
             {open.specifications?<RxCaretUp className="absolute top-5 right-1" />:<RxCaretDown className="absolute top-5 right-1" />}
          </div>
          <hr />

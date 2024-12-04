@@ -31,7 +31,7 @@ const Header:React.FC = () => {
   }
   return (
     <>
-    <div className="bg-black sticky top-0 z-[100] w-full flex items-center text-white h-[80px] ">
+    <div className="bg-black fixed top-0 z-[100] w-full flex items-center text-white h-[80px] ">
       {/* Mobile Menu */}
        <MobileMenu menuOpen={menuOpen} />
      <div className="flex items-center p-2 z-[10] justify-between w-full">
@@ -42,11 +42,12 @@ const Header:React.FC = () => {
           <div className={`h-[2px] bg-white w-[20px] transition-all duration-200 ${menuOpen&&"hidden"}`}></div>
         </div>
         <Link to='/'>
-        <p className={`${styles.logo} cursor-pointer text-md md:!text-xl `}>Super<span className='!text-[12px] md:!text-sm text-gray-500'> Deluxe</span></p>
-        </Link> 
+        <div className={`${styles.glitchdiv}`}>
+        <div className={`${styles.glitch} text-[13px] tracking-wider md:tracking-[5px] md:text-xl `} data-glitch="SUPER DELUXE">SUPER DELUXE</div>
+        </div>        </Link> 
         <div className='hidden md:flex gap-5'>
             {items?.categories?.map((category:Category)=>
-           <div onClick={()=>showsubcategories(category.subcategories,category._id)} key={category._id} className="flex gap-1 select-none    cursor-pointer justify-center items-center">
+           <div onClick={()=>showsubcategories(category.subcategories,category._id)} key={category._id} className="flex gap-1 select-none  cursor-pointer justify-center items-center">
             <a  className='text-sm' >{category.name}
              </a>
              {show.id===category._id && show.clicked?<span><RxCaretUp /></span>:<span><RxCaretDown /></span>}
@@ -56,7 +57,7 @@ const Header:React.FC = () => {
             <div className='flex items-center md:mr-3 gap-4'>
               <button><GoSearch  className='text-white text-xl md:text-2xl' /></button>
               {data.items?.user?<Link to='/account'><HiOutlineUser className='text-white text-2xl md:text-2xl' /></Link>: <Link to='/login'><HiOutlineUser className='text-white text-2xl md:text-2xl' /></Link>}
-             <button>
+             <button> 
               <div  onClick={()=>setMenu(true)} className="relative cursor-pointer">
               <div className="w-5 z-[100]  absolute text-sm -top-2 font-semibold cursor-pointer bg-black border-gray-800 -right-2 h-5 shadow-lg rounded-full flex justify-center items-center  border">{cartItems.length}</div>
               <CgShoppingBag  className='text-white  text-2xl md:text-2xl' />
@@ -64,8 +65,8 @@ const Header:React.FC = () => {
              </button>
      </div>
      </div>
-     {show.clicked && <div className='fixed pt-5 border-t border-t-gray-600 top-[100px] h-[150px] w-full bg-black text-white'>
-        <div className='flex w-full justify-around text-sm'>
+     {show.clicked && <div className='fixed pt-5 border-t border-t-gray-600 top-[80px] h-[150px] w-full bg-black text-white'>
+        <div className='grid space-x-10  w-[50%] grid-cols-3 space-y-4 text-sm'>
         {subCategories.map((sub:SubCategory)=><div  key={sub._id}>{sub.name}</div>)}
         </div>
         </div>}

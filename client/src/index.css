@@ -1,13 +1,16 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Doto:wght@100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face{
+  font-family: 'Josefin';
+  src:url('/josefin-sans/JosefinSans-Regular.ttf');
+  font-weight: normal;
+}
 body{
   margin: 0;
   padding: 0;
-  font-family: "Josefin sans", serif;
-  font-weight:400;
+  font-family: "Josefin";
 }
 .advertisement{
   font-family: "Doto", sans-serif !important;

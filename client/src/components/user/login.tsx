@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import OTPInput from "react-otp-input";
 import PhoneInput from "react-phone-input-2";
 import { app } from "../../auth/initializeApp";
@@ -13,6 +13,7 @@ import Successtoast from "../toast/successtoast";
 import { redirect } from "react-router-dom";
 import Errortoast from "../toast/errortoast";
 import { useNavigate } from "react-router-dom";
+import MenuContext, { MenuProvider } from "../../context/MenuContext";
 const Login = () => {
   const navigate = useNavigate();
   const [value, setvalue] = useState<string>("");
@@ -29,6 +30,7 @@ const Login = () => {
   const [isotpsent,setisotpsent] = useState(false);
   const [isverified, setisverified] = useState(false);
   const [formData,setformData] = useState({firstName:"",lastName:"",email:"",phone:""});
+  const {isAuthenticated,setisAuthenticated} = useContext(MenuProvider);
   function oncaptchaVerify() {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
@@ -46,6 +48,7 @@ const Login = () => {
     }
   }
   function sendotp(value){
+    setisAuthenticated(true);
     setisotpsent(value);
     setistoast(true);
     settoastmasg("OTP sent Successfully");

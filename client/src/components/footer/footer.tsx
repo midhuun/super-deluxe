@@ -20,7 +20,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Explore</h4>
             <ul className='mt-2 space-y-2'>
             
-              {products.status==='succeeded' && products?.items?.categories.slice(0,5).map((category:any)=>
+              {products.status==='succeeded' && products.items?.categories && products?.items?.categories.slice(0,5).map((category:any)=>
               <li className="hover:text-gray-400" key={category._id}>{category.name}</li>
             )}
             </ul>

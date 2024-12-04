@@ -11,7 +11,7 @@ type initialStateType ={
     items:itemsType| Object,
     status:string
 }
-const initialState:initialStateType= {
+const initialState:initialStateType | any= {
     items:{},
     status:'idle'
 }

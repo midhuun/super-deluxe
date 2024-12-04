@@ -19,19 +19,19 @@ const ProductList = () => {
         }
     };
     const products:any = useSelector((state:RootState) => state.Products);
-    const {subCategories} = products?.items;
+    const {subCategories} = products?.items || {subCategories:[]};
     const {status} = products;
   return (
     <>
     {status === 'succeeded' &&
     <div className="space-y-2 md:pl-5 p-3">
-    <p className='text-3xl'>{subCategories[0].name}</p>
+    <p className='text-3xl'>{subCategories && subCategories[0]?.name}</p>
     <div className="">
     <div 
             ref={scrollRef} 
             className="flex overflow-x-scroll overflow-y-hidden  gap-5 py-5 scrollbar"
         >
-            {subCategories[0]?.products.map((product) => (
+            { subCategories && subCategories[0]?.products.map((product) => (
                 <ProductCard key={product._id} product={product} />
             ))}
         </div>
