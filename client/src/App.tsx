@@ -14,6 +14,7 @@ import Account from "./components/user/account";
 import Footer from "./components/footer/footer";
 import Checkout from "./components/checkout/checkout";
 import { MenuProvider } from "./context/MenuContext";
+import AdminPanel from "./Admin/adminForm";
 function App() {
   const products = useSelector((state:RootState) => state.Products);
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +25,7 @@ function App() {
     if(products.items?.user){
       setisAuthenticated(true);
     }
-  }, 1000);
+  }, 600);
   console.log(isAuthenticated);
   useEffect(()=>{
     setTimeout(() => {
@@ -48,6 +49,7 @@ function App() {
       <Route path="/product/:product" element={<ProductPage/>} />
       <Route path="/account" element={<Account/>} />
       <Route path="/checkout" element={<Checkout/>} />
+      <Route path="/admin/dashboard" element={<AdminPanel/>} />
     </Routes>
     </Router>
     <Footer/>

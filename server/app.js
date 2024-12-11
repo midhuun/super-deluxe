@@ -15,6 +15,7 @@ app.use(cors({origin:'http://localhost:5173',credentials:true}));
 app.use(cookieParser());
 app.use(express.json());
 const port = process.env.PORT || 3000;
+console.log(port)
 const SECRET = process.env.SECRET || '12@dmrwejfwf3rnwnrm';
 app.post("/user/login",loginUser);
 app.patch("/user/update",userAuth,updateUser);
@@ -44,8 +45,22 @@ app.get("/api/cart",userAuth, async(req,res)=>{
         res.status(500).send({message:"Error Occured"})
     }
 })
+app.post("/api/addToCart",userAuth,async(req,res)=>{
+    const {token} = req.cookies;
+    const item = req.item;
+    const decoded = jwt.verify(token,SECRET);
+    try{
+        const user = await UserModel.find({_id:decoded.id});
+        
+        res.json({message:user})
+    }
+    catch(err){
+        console.log(err)
+    }
+})
 app.get("/logout",(req,res)=>{
     try{
+        console.log(req.cookies);
     res.clearCookie('token');
     console.log(req.cookies);
     res.status(200).send({message:"Logged out Successfully"})

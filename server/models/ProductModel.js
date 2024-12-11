@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 const validator = require('validator');
   const CategorySchema = new Schema({
       name:{
-          type:String,required:true,unique:true,minLength:[4,"Category must be more than 4 characters"],maxLength:[10,"Category must not be more than 10 characters"]
+          type:String,required:true,unique:true,minLength:[4,"Category must be more than 4 characters"],maxLength:[20,"Category must not be more than 20 characters"]
           },
       slug:{
           type:String,trim:true

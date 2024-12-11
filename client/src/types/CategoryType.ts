@@ -35,7 +35,7 @@ export type Category ={
 }
 export type StoreData = {
     products: Product[];
-    subcategories: SubCategory[];
+    subCategories: SubCategory[];
     categories: Category[];
   };
 export type result = {
