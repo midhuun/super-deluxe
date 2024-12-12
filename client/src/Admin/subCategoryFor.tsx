@@ -33,6 +33,7 @@ const CategoryForm = () => {
     const result = await file.json();
     if(result.status ===200){
       const url =result.data.display_url;
+      const updated = {...formData,image:url}
       setFormData((prev)=>({...prev,image:url}));
       console.log(formData)
       const data = await fetch('http://localhost:3001/admin/create/subCategory',{
@@ -40,7 +41,7 @@ const CategoryForm = () => {
         headers:{
           'Content-Type':'application/json',
         },
-        body:JSON.stringify(formData)
+        body:JSON.stringify(updated)
       })
       const res = await data.json();
       if(res.status === 200){
